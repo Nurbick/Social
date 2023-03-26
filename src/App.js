@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react'
+import { useSelector } from 'react-redux'
+import '../src/styles/style.scss'
+import AuthRouting from './routing/AuthRouting'
+import PrivateRouting from './routing/PrivateRouting'
+import './utils/i18n'
 
 function App() {
+  const { user } = useSelector(store => store.persistedReducer.user);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <Suspense fallback={'...Loading'}>
+        {!user.login.length ? <AuthRouting /> : <PrivateRouting />}
+      </Suspense>
+  )
 }
 
-export default App;
+export default App
